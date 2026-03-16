@@ -1,0 +1,12 @@
+#Build
+bin/
+obj/
+
+# Visual Studio
+.vs/
+
+# Logs
+*.log
+
+#Config local
+appsettings.Development.json
