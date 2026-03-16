@@ -1,6 +1,19 @@
+
+
+using Microsoft.EntityFrameworkCore;
+using NF.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+//DB init e config
+builder.Services.AddDbContext<NFContext>(options => 
+options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -1,15 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace NF.Models
+namespace NF.DTOs.Cliente
 {
-    [Table("Clientes")]
-    public class Cliente
+    public class ClienteRequestDTO
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int IdCliente { get; set; }
-
         [Required(ErrorMessage = "Razão Social é obrigatória.")]
         [MaxLength(200)]
         public string RazaoSocial { get; set; } = string.Empty;
@@ -37,8 +31,5 @@ namespace NF.Models
         [Required(ErrorMessage = "CEP é obrigatório.")]
         [MaxLength(100)]
         public string CEP { get; set; } = string.Empty;
-
-        public ICollection<Veiculo> Veiculos { get; set; } = new List<Veiculo>();
-        public ICollection<OrdemServico> OrdemServicos { get; set; } = new List<OrdemServico>();
     }
 }

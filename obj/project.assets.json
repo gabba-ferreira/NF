@@ -4542,23 +4542,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\gabriel.ferreira\\.nuget\\packages\\": {},
+    "C:\\Users\\gabbr\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\gabriel.ferreira\\Desktop\\Labs\\NF\\NF.csproj",
+      "projectUniqueName": "C:\\Labs\\NF\\NF\\NF.csproj",
       "projectName": "NF",
-      "projectPath": "C:\\Users\\gabriel.ferreira\\Desktop\\Labs\\NF\\NF.csproj",
-      "packagesPath": "C:\\Users\\gabriel.ferreira\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\gabriel.ferreira\\Desktop\\Labs\\NF\\obj\\",
+      "projectPath": "C:\\Labs\\NF\\NF\\NF.csproj",
+      "packagesPath": "C:\\Users\\gabbr\\.nuget\\packages\\",
+      "outputPath": "C:\\Labs\\NF\\NF\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\gabriel.ferreira\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\gabbr\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -4586,7 +4586,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.200"
+      "SdkAnalysisLevel": "10.0.200"
     },
     "frameworks": {
       "net8.0": {
@@ -4632,7 +4632,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.200/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
