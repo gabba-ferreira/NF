@@ -1,6 +1,6 @@
 ﻿namespace NF.Repositories.Interfaces
 {
-    public interface IOrdemServicoRepositorycs
+    public interface IOrdemServicoRepository
     {
     }
 }
