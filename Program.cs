@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using NF.Data;
 using NF.Repositories;
 using NF.Repositories.Interfaces;
+using NF.Services;
+using NF.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,13 +16,20 @@ builder.Services.AddDbContext<NFContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 //Repositories
-// Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 builder.Services.AddScoped<IVeiculoRepository, VeiculoRepository>();
 builder.Services.AddScoped<IOrdemServicoRepository, OrdemServicoRepository>();
 builder.Services.AddScoped<IPecaRepository, PecaRepository>();
 builder.Services.AddScoped<IOrdemServicoPecaRepository, OrdemServicoPecaRepository>();
+
+//Services
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IClienteService, ClienteService>();
+builder.Services.AddScoped<IVeiculoService, VeiculoService>();
+builder.Services.AddScoped<IOrdemServicoService, OrdemServicoService>();
+builder.Services.AddScoped<IPecaService, PecaService>();
+builder.Services.AddScoped<IOrdemServicoPecaService, OrdemServicoPecaService>();
 
 
 
