@@ -1,5 +1,4 @@
 ﻿using NF.DTOs.OrdemServico_Peca;
-using NF.DTOs.OrdemServicoPeca;
 using NF.Models;
 using NF.Repositories.Interfaces;
 using NF.Services.Interfaces;

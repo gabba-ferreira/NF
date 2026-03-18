@@ -20,6 +20,8 @@ namespace NF.Repositories
         {
             await _dbSet.AddAsync(entity);
             await _context.AddAsync(entity);
+            await _context.SaveChangesAsync();
+
         }
 
         public async Task Delete(int id)

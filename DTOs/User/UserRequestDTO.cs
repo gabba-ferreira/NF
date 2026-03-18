@@ -23,6 +23,6 @@ namespace NF.DTOs.User
         public string? Telefone { get; set; }
 
         [Required(ErrorMessage = "Role é obrigatória.")]
-        public Role Role { get; set; }
+        public Role? Role { get; set; }
     }
 }

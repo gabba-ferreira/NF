@@ -32,6 +32,7 @@ namespace NF.Services
             if (await _repository.EmailExiste(dto.Email))
                 throw new Exception("E-mail já cadastrado.");
 
+
             var user = new User
             {
                 NomeCompleto = dto.NomeCompleto,
@@ -80,7 +81,7 @@ namespace NF.Services
                 NomeCompleto = user.NomeCompleto,
                 Email = user.Email,
                 Telefone = user.Telefone,
-                Role = user.Role
+                Role = (Role)user.Role
             };
         }
     }

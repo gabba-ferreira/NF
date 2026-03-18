@@ -32,6 +32,6 @@ namespace NF.Models
         public string? Telefone { get; set; }
 
         [Required]
-        public Role Role { get; set; }
+        public Role? Role { get; set; }
     }
 }
