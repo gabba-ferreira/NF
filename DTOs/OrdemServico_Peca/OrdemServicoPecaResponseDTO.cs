@@ -8,6 +8,5 @@
         public string? CodPeca { get; set; }
         public decimal PrecoUnitario { get; set; }
         public int QtdPeca { get; set; }
-        public decimal ValorTotal { get; set; }
     }
 }

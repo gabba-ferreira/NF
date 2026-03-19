@@ -1,4 +1,6 @@
-﻿using NF.DTOs.OrdemServico;
+﻿using System.Linq;
+using NF.DTOs.OrdemServico;
+using NF.DTOs.OrdemServico_Peca;
 using NF.Models;
 using NF.Repositories.Interfaces;
 using NF.Services.Interfaces;
@@ -10,15 +12,18 @@ namespace NF.Services
         private readonly IOrdemServicoRepository _repository;
         private readonly IClienteRepository _clienteRepository;
         private readonly IVeiculoRepository _veiculoRepository;
+        private readonly IOrdemServicoPecaRepository _osPecaRepository;
 
         public OrdemServicoService(
             IOrdemServicoRepository repository,
             IClienteRepository clienteRepository,
-            IVeiculoRepository veiculoRepository)
+            IVeiculoRepository veiculoRepository,
+            IOrdemServicoPecaRepository osPecaRepository)
         {
             _repository = repository;
             _clienteRepository = clienteRepository;
             _veiculoRepository = veiculoRepository;
+            _osPecaRepository = osPecaRepository;
         }
 
         public async Task<List<OrdemServicoResponseDTO>> GetAll()
@@ -81,6 +86,50 @@ namespace NF.Services
             return MapToResponse(ordem);
         }
 
+        public async Task<OrdemServicoResponseDTO> CreateComPeca(OrdemServicoRequestDTO dto)
+        {
+            var cliente = await _clienteRepository.GetById(dto.IdCliente);
+            if (cliente == null)
+                throw new Exception("Cliente não encontrado.");
+
+            var veiculo = await _veiculoRepository.GetById(dto.IdVeiculo);
+            if (veiculo == null)
+                throw new Exception("Veículo não encontrado.");
+
+            if (veiculo.IdCliente != dto.IdCliente)
+                throw new Exception("Veículo não pertence ao cliente informado.");
+
+            var ordem = new OrdemServico
+            {
+                IdCliente = dto.IdCliente,
+                IdVeiculo = dto.IdVeiculo,
+                Status = dto.Status,
+                Responsavel = dto.Responsavel,
+                DefeitoDesc = dto.DefeitoDesc,
+                ValorMaoDeObra = dto.ValorMaoDeObra,
+                DtVisita = dto.DtVisita,
+                DtFim = dto.DtFim
+            };
+
+            await _repository.Add(ordem);
+
+            foreach (var pecaDto in dto.Pecas)
+            {
+
+                var item = new OrdemServico_Peca
+                {
+                    IdOs = ordem.IdOs,
+                    IdPeca = pecaDto.IdPeca,
+                    QtdPeca = pecaDto.QtdPeca
+                };
+
+                await _osPecaRepository.Add(item);
+
+            }
+
+            return MapToResponse(ordem);
+        }
+
         public async Task<OrdemServicoResponseDTO?> Update(int id, OrdemServicoRequestDTO dto)
         {
             var ordem = await _repository.GetById(id);
@@ -110,6 +159,43 @@ namespace NF.Services
             ordem.DtFim = dto.DtFim;
 
             await _repository.Update(ordem);
+
+
+            //OsPecaSync(id, dto);
+
+            var pecasAtuais = await _osPecaRepository.GetByOs(ordem.IdOs);
+            var idsDto = dto.Pecas.Select(p => p.IdPeca).ToList();
+
+            foreach (var peca in pecasAtuais)
+            {
+                if (!idsDto.Contains(peca.IdPeca))
+                {
+                    await _osPecaRepository.Delete(ordem.IdOs, peca.IdPeca);
+                }
+            }
+
+            foreach (var pecaDto in dto.Pecas)
+            {
+                var pecaExistente = pecasAtuais.FirstOrDefault(x => x.IdPeca == pecaDto.IdPeca);
+
+                if (pecaExistente != null)
+                {
+                    pecaExistente.QtdPeca = pecaDto.QtdPeca;
+                    await _osPecaRepository.Update(pecaExistente);
+                }
+                else
+                {
+                    var item = new OrdemServico_Peca
+                    {
+                        IdOs = ordem.IdOs,
+                        IdPeca = pecaDto.IdPeca,
+                        QtdPeca = pecaDto.QtdPeca
+                    };
+                    await _osPecaRepository.Update(item);
+                }
+
+
+            }
             return MapToResponse(ordem);
         }
 
@@ -153,8 +239,54 @@ namespace NF.Services
                 DefeitoDesc = ordem.DefeitoDesc,
                 ValorMaoDeObra = ordem.ValorMaoDeObra,
                 DtVisita = ordem.DtVisita,
-                DtFim = ordem.DtFim
+                DtFim = ordem.DtFim,
+                Pecas = ordem.OrdemServico_Pecas.Select(op => new OrdemServicoPecaResponseDTO
+                {
+                    IdPeca = op.IdPeca,
+                    NomePeca = op.Peca?.NomePeca ?? string.Empty,
+                    CodPeca = op.Peca?.CodPeca,
+                    PrecoUnitario = op.Peca?.PrecoUnitario ?? 0,
+                    QtdPeca = op.QtdPeca,
+                }).ToList() ?? new List<OrdemServicoPecaResponseDTO>(),
+
+                ValorTotal = ordem.OrdemServico_Pecas.Sum(op => op.QtdPeca * op.Peca.PrecoUnitario)
+
             };
+        }
+
+        private async void OsPecaSync(int idOrdemServico, OrdemServicoRequestDTO dto)
+        {
+            var pecasAtuais = await _osPecaRepository.GetByOs(idOrdemServico);
+            var idsDto = dto.Pecas.Select(p => p.IdPeca).ToList();
+
+            foreach (var peca in pecasAtuais)
+            {
+                if (!idsDto.Contains(peca.IdPeca))
+                {
+                    await _osPecaRepository.Delete(idOrdemServico, peca.IdPeca);
+                }
+            }
+
+            foreach (var pecaDto in dto.Pecas)
+            {
+                var pecaExistente = pecasAtuais.FirstOrDefault(x => x.IdPeca == pecaDto.IdPeca);
+
+                if (pecaExistente != null)
+                {
+                    pecaExistente.QtdPeca = pecaDto.QtdPeca;
+                    await _osPecaRepository.Update(pecaExistente);
+                }
+                else
+                {
+                    var item = new OrdemServico_Peca
+                    {
+                        IdOs = idOrdemServico,
+                        IdPeca = pecaDto.IdPeca,
+                        QtdPeca = pecaDto.QtdPeca
+                    };
+                    await _osPecaRepository.Update(item);
+                }
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using NF.Models;
+﻿using NF.DTOs.OrdemServico_Peca;
+using NF.Models;
 
 namespace NF.DTOs.OrdemServico
 {
@@ -16,5 +17,6 @@ namespace NF.DTOs.OrdemServico
         public decimal? ValorMaoDeObra { get; set; }
         public DateTime? DtVisita { get; set; }
         public DateTime? DtFim { get; set; }
+        public List<OrdemServicoPecaResponseDTO> Pecas { get; set; }
     }
 }

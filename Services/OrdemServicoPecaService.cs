@@ -47,8 +47,6 @@ namespace NF.Services
             if (jaExiste != null)
                 throw new Exception("Peça já adicionada a esta OS. Use a opção de editar para alterar a quantidade.");
 
-            // Desconta do estoque
-            peca.QtdEstoque -= dto.QtdPeca;
             await _pecaRepository.Update(peca);
 
             var item = new OrdemServico_Peca
