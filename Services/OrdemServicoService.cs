@@ -2,6 +2,7 @@
 using NF.DTOs.OrdemServico;
 using NF.DTOs.OrdemServico_Peca;
 using NF.Models;
+using NF.Repositories;
 using NF.Repositories.Interfaces;
 using NF.Services.Interfaces;
 
@@ -13,17 +14,20 @@ namespace NF.Services
         private readonly IClienteRepository _clienteRepository;
         private readonly IVeiculoRepository _veiculoRepository;
         private readonly IOrdemServicoPecaRepository _osPecaRepository;
+        private readonly IPecaRepository _pecaRepository;
 
         public OrdemServicoService(
             IOrdemServicoRepository repository,
             IClienteRepository clienteRepository,
             IVeiculoRepository veiculoRepository,
-            IOrdemServicoPecaRepository osPecaRepository)
+            IOrdemServicoPecaRepository osPecaRepository,
+            IPecaRepository pecaRepository)
         {
             _repository = repository;
             _clienteRepository = clienteRepository;
             _veiculoRepository = veiculoRepository;
             _osPecaRepository = osPecaRepository;
+            _pecaRepository = pecaRepository;
         }
 
         public async Task<List<OrdemServicoResponseDTO>> GetAll()
@@ -99,6 +103,7 @@ namespace NF.Services
             if (veiculo.IdCliente != dto.IdCliente)
                 throw new Exception("Veículo não pertence ao cliente informado.");
 
+
             var ordem = new OrdemServico
             {
                 IdCliente = dto.IdCliente,
@@ -115,12 +120,12 @@ namespace NF.Services
 
             foreach (var pecaDto in dto.Pecas)
             {
-
+                var peca = await _pecaRepository.GetById(pecaDto.IdPeca);
                 var item = new OrdemServico_Peca
                 {
                     IdOs = ordem.IdOs,
                     IdPeca = pecaDto.IdPeca,
-                    QtdPeca = pecaDto.QtdPeca
+                    QtdPeca = pecaDto.QtdPeca,
                 };
 
                 await _osPecaRepository.Add(item);
@@ -249,7 +254,7 @@ namespace NF.Services
                     QtdPeca = op.QtdPeca,
                 }).ToList() ?? new List<OrdemServicoPecaResponseDTO>(),
 
-                ValorTotal = ordem.OrdemServico_Pecas.Sum(op => op.QtdPeca * op.Peca.PrecoUnitario)
+                ValorTotal = ordem.OrdemServico_Pecas.Sum(op => op.QtdPeca * op.Peca?.PrecoUnitario ?? 0)
 
             };
         }

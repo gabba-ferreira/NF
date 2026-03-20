@@ -17,6 +17,9 @@ namespace NF.DTOs.OrdemServico
         public decimal? ValorMaoDeObra { get; set; }
         public DateTime? DtVisita { get; set; }
         public DateTime? DtFim { get; set; }
+
         public List<OrdemServicoPecaResponseDTO> Pecas { get; set; }
+
+        public decimal ValorTotal { get; set; }
     }
 }

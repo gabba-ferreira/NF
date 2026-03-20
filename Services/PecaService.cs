@@ -58,8 +58,6 @@ namespace NF.Services
             return MapToResponse(peca);
         }
 
-
-
         public async Task<PecaResponseDTO?> Update(int id, PecaRequestDTO dto)
         {
             var peca = await _repository.GetById(id);

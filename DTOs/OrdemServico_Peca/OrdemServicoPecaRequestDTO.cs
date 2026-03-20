@@ -4,8 +4,7 @@ namespace NF.DTOs.OrdemServico_Peca
 {
     public class OrdemServicoPecaRequestDTO
     {
-        [Required(ErrorMessage = "IdOs é obrigatório.")]
-        public int IdOs { get; set; }
+
 
         [Required(ErrorMessage = "IdPeca é obrigatório.")]
         public int IdPeca { get; set; }

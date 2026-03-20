@@ -29,7 +29,7 @@ builder.Services.AddScoped<IClienteService, ClienteService>();
 builder.Services.AddScoped<IVeiculoService, VeiculoService>();
 builder.Services.AddScoped<IOrdemServicoService, OrdemServicoService>();
 builder.Services.AddScoped<IPecaService, PecaService>();
-builder.Services.AddScoped<IOrdemServicoPecaService, OrdemServicoPecaService>();
+//builder.Services.AddScoped<IOrdemServicoPecaService, OrdemServicoPecaService>();
 
 
 

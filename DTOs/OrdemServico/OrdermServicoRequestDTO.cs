@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using NF.DTOs.OrdemServico_Peca;
 using NF.Models;
 
 namespace NF.DTOs.OrdemServico
@@ -26,5 +27,7 @@ namespace NF.DTOs.OrdemServico
 
         public DateTime? DtVisita { get; set; }
         public DateTime? DtFim { get; set; }
+
+        public List<OrdemServicoPecaRequestDTO> Pecas { get; set; }
     }
 }
